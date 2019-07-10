@@ -1,0 +1,50 @@
+{
+  "name": "epsagon-testing",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Testing Epsagon",
+  "main": "src/index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "test": "nyc mocha && npm run lint",
+    "build": "wsk-builder -v",
+    "deploy": "wsk-builder -v --deploy --test"
+  },
+  "wsk": {
+    "name": "epsagon-testing",
+    "static": [],
+    "params-file": [
+      ".env"
+    ],
+    "externals": {
+      "express": true,
+      "body-parser": true,
+      "cls-hooked": true,
+      "request": true,
+      "request-promise": true,
+      "webpack": true,
+      "formidable": true
+    }
+  },
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@adobe/helix-pingdom-status": "^1.4.1",
+    "@adobe/openwhisk-action-builder": "^1.0.1",
+    "epsagon": "file:../epsagon-node/epsagon-0.0.0-development.tgz",
+    "openwhisk": "^3.19.0",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.7"
+  },
+  "devDependencies": {
+    "dotenv": "^8.0.0",
+    "eslint": "^6.0.1",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-header": "3.0.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.1",
+    "eslint-plugin-react": "^7.11.0",
+    "mocha": "^6.1.4",
+    "mocha-junit-reporter": "^1.18.0"
+  }
+}
