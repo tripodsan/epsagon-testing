@@ -15,16 +15,7 @@
     "static": [],
     "params-file": [
       ".env"
-    ],
-    "externals": {
-      "express": true,
-      "body-parser": true,
-      "cls-hooked": true,
-      "request": true,
-      "request-promise": true,
-      "webpack": true,
-      "formidable": true
-    }
+    ]
   },
   "author": "",
   "license": "Apache-2.0",
