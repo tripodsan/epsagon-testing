@@ -22,7 +22,7 @@
   "dependencies": {
     "@adobe/helix-pingdom-status": "^1.4.1",
     "@adobe/openwhisk-action-builder": "^1.0.1",
-    "epsagon": "file:../epsagon-node/epsagon-0.0.0-development.tgz",
+    "epsagon": "^1.31.4",
     "openwhisk": "^3.19.0",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7"
