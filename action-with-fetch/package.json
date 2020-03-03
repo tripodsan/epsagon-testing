@@ -1,0 +1,36 @@
+{
+  "name": "epsagon-testing",
+  "version": "1.0.2",
+  "private": true,
+  "description": "Testing Epsagon",
+  "main": "src/index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "test": "nyc mocha && npm run lint",
+    "build": "wsk-builder -v",
+    "deploy": "wsk-builder -v --deploy --test",
+    "test:fetch": "node test/run.js fetch",
+    "test:request": "node test/run.js request"
+  },
+  "wsk": {
+    "name": "epsagon-testing@${version}",
+    "static": [],
+    "params-file": [
+      ".env"
+    ]
+  },
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@adobe/helix-fetch": "^1.4.0",
+    "epsagon": "^1.55.0",
+    "request": "^2.88.2",
+    "request-promise-native": "^1.0.8"
+  },
+  "devDependencies": {
+    "@adobe/eslint-config-helix": "1.1.0",
+    "@adobe/openwhisk-action-builder": "^2.6.2",
+    "dotenv": "^8.2.0",
+    "eslint": "^6.0.1"
+  }
+}
