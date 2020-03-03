@@ -74,6 +74,7 @@ async function main(params) {
   try {
     log = logger(params, log);
     console.log = log.info.bind(log);
+    console.error = log.error.bind(log);
     const result = await run(params);
     if (log.flush) {
       log.flush(); // don't wait

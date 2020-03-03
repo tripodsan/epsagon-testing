@@ -1,6 +1,6 @@
 {
   "name": "epsagon-testing",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "Testing Epsagon",
   "main": "src/index.js",
@@ -11,7 +11,7 @@
     "deploy": "wsk-builder -v --deploy --test"
   },
   "wsk": {
-    "name": "epsagon-testing",
+    "name": "epsagon-testing@${version}",
     "static": [],
     "params-file": [
       ".env"
@@ -20,9 +20,9 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@adobe/helix-pingdom-status": "^1.4.1",
-    "@adobe/openwhisk-action-builder": "^1.0.1",
-    "epsagon": "^1.31.4",
+    "@adobe/helix-pingdom-status": "^2.0.2",
+    "@adobe/openwhisk-action-builder": "^1.2.2",
+    "epsagon": "file:../epsagon-node/epsagon-0.0.0-development.tgz",
     "openwhisk": "^3.19.0",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7"
