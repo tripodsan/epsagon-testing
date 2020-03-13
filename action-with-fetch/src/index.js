@@ -22,11 +22,15 @@ const log = {
 async function testFetch() {
   // create own context and disable http2
   const context = fetchAPI.context({
-    httpProtocol: 'http1',
-    httpsProtocols: ['http1'],
+    // httpProtocol: 'http1',
+    // httpsProtocols: ['http1'],
   });
   try {
-    const resp = await context.fetch('https://raw.githubusercontent.com/adobe/helix-shared/master/package.json');
+    const resp = await context.fetch('https://www.nghttp2.org/httpbin/gzip', {
+      headers: {
+        accept: 'application/json',
+      }
+    });
     console.log(resp.status);
     const text = await resp.text();
     return {
@@ -39,20 +43,15 @@ async function testFetch() {
 }
 
 async function testRequest() {
-  // create own context and disable http2
-  const context = fetchAPI.context({
-    httpProtocol: 'http1',
-    httpsProtocols: ['http1'],
+  const resp = await rp({
+    url: 'https://httpbin.org/gzip',
+    gzip: true,
+    resolveWithFullResponse: true,
   });
-  try {
-    const resp = await rp('https://raw.githubusercontent.com/adobe/helix-shared/master/package.json');
-    return {
-      statusCode: resp.statusCode,
-      body: resp.body,
-    };
-  } finally {
-    await context.disconnectAll();
-  }
+  return {
+    statusCode: resp.statusCode,
+    body: resp.body,
+  };
 }
 
 async function run(params) {
