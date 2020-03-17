@@ -23,7 +23,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@adobe/helix-fetch": "^1.4.0",
-    "epsagon": "^1.55.0",
+    "epsagon": "^1.56.1",
     "request": "^2.88.2",
     "request-promise-native": "^1.0.8"
   },
