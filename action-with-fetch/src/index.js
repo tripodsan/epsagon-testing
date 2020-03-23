@@ -26,7 +26,9 @@ async function testFetch() {
     // httpsProtocols: ['http1'],
   });
   try {
-    const resp = await context.fetch('https://www.nghttp2.org/httpbin/gzip', {
+    // const resp = await context.fetch('https://www.nghttp2.org/httpbin/gzip', {
+    const resp = await context.fetch('https://httpbin.org/post', {
+      method: 'post',
       headers: {
         accept: 'application/json',
       }
@@ -44,8 +46,11 @@ async function testFetch() {
 
 async function testRequest() {
   const resp = await rp({
-    url: 'https://httpbin.org/gzip',
-    gzip: true,
+    url: 'https://httpbin.org/post',
+    method: 'post',
+    headers: {
+      accept: 'application/json',
+    },
     resolveWithFullResponse: true,
   });
   return {

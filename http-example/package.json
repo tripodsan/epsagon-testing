@@ -4,6 +4,6 @@
   "main": "index.js",
   "license": "Apache-2",
   "dependencies": {
-    "epsagon": "1.56.1"
+    "epsagon": "1.57.2"
   }
 }
