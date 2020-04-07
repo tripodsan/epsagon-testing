@@ -29,7 +29,7 @@ async function testFetch() {
     // const resp = await context.fetch('https://www.nghttp2.org/httpbin/post', {
     const resp = await context.fetch('https://adobeioruntime.net/api/v1/web/helix/helix-services/word2md@v1?path=%2Fen%2Farchive%2F2020%2Fshare-like-a-boss.docx&shareLink=https%3A%2F%2Fadobe.sharepoint.com%2Fsites%2FTheBlog%2FShared%2520Documents%2Ftheblog&rid=VqNCOOblZXzBlnpLTvgG39uWoAIrGDWF&src=adobe%2Ftheblog%2Fdd25127aa92f65fda6a0927ed3fb00bf5dcea069', {
       headers: {
-        accept: 'application/json',
+        accept: 'text/plain',
       }
     });
     console.log(resp.status);

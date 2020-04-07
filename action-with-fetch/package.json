@@ -10,7 +10,8 @@
     "build": "wsk-builder -v",
     "deploy": "wsk-builder -v --deploy --test",
     "test:fetch": "node test/run.js fetch",
-    "test:request": "node test/run.js request"
+    "test:request": "node test/run.js request",
+    "test:bundle": "node test/run-bundle.js fetch"
   },
   "wsk": {
     "name": "epsagon-testing@${version}",
@@ -22,8 +23,8 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@adobe/helix-fetch": "1.4.1",
-    "epsagon": "1.57.2",
+    "@adobe/helix-fetch": "1.6.0",
+    "epsagon": "1.58.3",
     "request": "^2.88.2",
     "request-promise-native": "^1.0.8"
   },

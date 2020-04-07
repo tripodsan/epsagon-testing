@@ -41,9 +41,34 @@ This will run the action locally using `helix-fetch`. this produces no
 output at all, which means, the response from the action is somewhere
 swallowed in the openwhisk wrapper.
 
-**Note**
-- disabling epsagon, i.e. commenting out the `EPSAGON_TOKEN` shows the
-correct response.
+### Testing bundled action with helix-fetch
 
-- even disabling http2 for helix-fetch doesn't help here. helix-fetch is
-using fetch-h2 under the hood, which issues a APN discovery request to the host. this might be the actual problem.
+run:
+
+```console
+$ npm run build
+$ npm run test:bundle
+```
+
+the error can be seen in the trace:
+
+```
+RangeError: Resource length mismatch (possibly incomplete body)
+    at throwLengthMismatch (~/codez/helix/epsagon-testing/action-with-fetch/dist/default/epsagon-testing@1.0.2-bundle.js:4726:11)
+    at StreamResponse.validateIntegrity (~/codez/helix/epsagon-testing/action-with-fetch/dist/default/epsagon-testing@1.0.2-bundle.js:4876:13)
+    at awaitBuffer.then.already_1.tap.buffer (~/codez/helix/epsagon-testing/action-with-fetch/dist/default/epsagon-testing@1.0.2-bundle.js:4790:52)
+    at ~/codez/helix/epsagon-testing/action-with-fetch/dist/default/epsagon-testing@1.0.2-bundle.js:1571:15
+    at process._tickCallback (internal/process/next_tick.js:68:7)
+```
+
+### bundling a development version of epsagon
+
+using `npm link` doesn't always reliably work with webpack. it is better to create a tgz:
+
+```console
+$ cd epsagon-node
+$ npm run build
+$ npm pack
+$ cd ../epsagon-testing/action-with-fetch
+$ npm add ../../epsagon-node/epsagon-0.0.0-development.tgz
+``` 
