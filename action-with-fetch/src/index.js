@@ -10,8 +10,9 @@
  * governing permissions and limitations under the License.
  */
 /* eslint-disable no-console */
-const fetchAPI = require('@adobe/helix-fetch');
-const rp = require('request-promise-native');
+const { wrap } = require('@adobe/openwhisk-action-utils');
+const { epsagon } = require('@adobe/helix-epsagon');
+const action = require('./action');
 
 const log = {
   info: console.log,
@@ -19,56 +20,14 @@ const log = {
   debug: console.debug,
 };
 
-async function testFetch() {
-  // create own context and disable http2
-  const context = fetchAPI.context({
-    // httpProtocol: 'http1',
-    // httpsProtocols: ['http1'],
-  });
-  try {
-    // const resp = await context.fetch('https://www.nghttp2.org/httpbin/post', {
-    const resp = await context.fetch('https://adobeioruntime.net/api/v1/web/helix/helix-services/word2md@v1?path=%2Fen%2Farchive%2F2020%2Fshare-like-a-boss.docx&shareLink=https%3A%2F%2Fadobe.sharepoint.com%2Fsites%2FTheBlog%2FShared%2520Documents%2Ftheblog&rid=VqNCOOblZXzBlnpLTvgG39uWoAIrGDWF&src=adobe%2Ftheblog%2Fdd25127aa92f65fda6a0927ed3fb00bf5dcea069', {
-      headers: {
-        accept: 'text/plain',
-      }
-    });
-    console.log(resp.status);
-    const text = await resp.text();
-    return {
-      statusCode: 200,
-      body: text,
-    };
-  } finally {
-    await context.disconnectAll();
-  }
-}
-
-async function testRequest() {
-  const resp = await rp({
-    url: 'https://httpbin.org/post',
-    method: 'post',
-    headers: {
-      accept: 'application/json',
-    },
-    resolveWithFullResponse: true,
-  });
-  return {
-    statusCode: resp.statusCode,
-    body: resp.body,
-  };
-}
+process.env.EPSAGON_DEBUG = 'TRUE';
 
 async function run(params) {
-  // const test = testRequest;
-  const test = params.MODE === 'fetch' ? testFetch : testRequest;
-  console.log(`using ${params.MODE} to download content.`);
-
   if (params && params.EPSAGON_TOKEN) {
-    process.env.EPSAGON_DEBUG = 'TRUE';
     // eslint-disable-next-line global-require
     const { openWhiskWrapper } = require('epsagon');
     log.info('instrumenting epsagon.');
-    const action = openWhiskWrapper(test, {
+    return openWhiskWrapper(action, {
       sendTimeout: 2000,
       ignoredKeys: [/^[A-Z][A-Z0-9_]+$/, /^__ow_.*/],
       httpErrorStatusCode: 500,
@@ -76,10 +35,10 @@ async function run(params) {
       token_param: 'EPSAGON_TOKEN',
       appName: 'Helix Testing',
       metadataOnly: false,
-    });
-    return action(params);
+      disableHttpResponseBodyCapture: true,
+    })(params);
   }
-  return test(params);
+  return action(params);
 }
 
 /**
@@ -90,6 +49,7 @@ async function run(params) {
 async function main(params) {
   try {
     return await run(params);
+    // return await action(params);
   } catch (e) {
     log.error(e);
     return {
@@ -97,7 +57,5 @@ async function main(params) {
     };
   }
 }
-
-module.exports = {
-  main,
-};
+// module.exports.main = wrap(main).with(epsagon);
+module.exports.main = main;
