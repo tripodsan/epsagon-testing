@@ -23,17 +23,19 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@adobe/helix-epsagon": "1.2.0",
-    "@adobe/helix-fetch": "1.6.0",
+    "@adobe/helix-epsagon": "1.2.2",
+    "@adobe/helix-fetch": "1.6.1",
     "@adobe/openwhisk-action-utils": "^4.2.2",
-    "epsagon": "1.58.5",
+    "epsagon": "1.64.0",
     "request": "^2.88.2",
     "request-promise-native": "^1.0.8"
   },
   "devDependencies": {
     "@adobe/eslint-config-helix": "1.1.0",
-    "@adobe/openwhisk-action-builder": "^2.6.2",
+    "@adobe/openwhisk-action-builder": "^2.10.1",
     "dotenv": "^8.2.0",
-    "eslint": "^6.0.1"
+    "eslint": "7.0.0",
+    "eslint-plugin-header": "3.0.0",
+    "eslint-plugin-import": "2.20.2"
   }
 }
