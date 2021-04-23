@@ -9,19 +9,74 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+process.env.EPSAGON_DEBUG = 'TRUE';
+
 const epsagon = require('epsagon');
-const { fetch } = require('@adobe/helix-fetch');
+const assert = require('assert');
+const fs = require('fs');
+const https = require('https');
+const fetchAPI = require('@adobe/helix-fetch');
 
 epsagon.init({
-  token: process.env.EPSAGON_TOKEN,
+  token: 'xxx',
   appName: 'Helix Test',
   metadataOnly: false,
+  sendBatch: false,
 });
 
 async function test(callback) {
-  const resp = await fetch(`https://raw.githubusercontent.com/adobe/helix-shared/master/package.json`);
-  console.log(resp.status);
-  console.log(await resp.text());
+  const context = fetchAPI.context({
+    alpnProtocols: [fetchAPI.ALPN_HTTP2],
+    h2: { rejectUnauthorized: false },
+    h1: { rejectUnauthorized: false },
+  });
+  const { fetch } = context;
+
+  const options = {
+    key: fs.readFileSync('key.pem'),
+    cert: fs.readFileSync('cert.pem'),
+  };
+  let count = 0;
+
+  let server;
+  await new Promise((resolve, reject) => {
+    server = https.createServer(options, (req, res) => {
+      console.log(count, 'request received');
+      if (count === 1) {
+        req.socket.destroy();
+        return;
+      }
+      res.writeHead(200);
+      res.end('hello');
+      count += 1;
+    }).listen(0)
+      .on('error', reject)
+      .on('listening', resolve);
+  });
+
+  const location = `https://localhost:${server.address().port}/`;
+  try {
+    const r1 = await fetch(location, { cache: 'no-store' });
+    console.log('first fetch success:', r1.status, await r1.text());
+  } catch (e) {
+    console.error('first fetch failed', e);
+  }
+
+  try {
+    const url = `https://httpbingo.org/redirect-to?url=${encodeURIComponent(location)}&status_code=302`;
+    await fetch(url, { cache: 'no-store' });
+    assert.fail('redirect should fail');
+  } catch (e) {
+    if (e.message === 'redirect should fail') {
+      throw e;
+    }
+    console.error(e);
+  } finally {
+    server.close();
+  }
+
+
+  context.reset();
   callback();
 }
 

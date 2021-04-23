@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@adobe/helix-fetch": "^1.4.0",
-    "epsagon": "^1.55.0"
+    "@adobe/helix-fetch": "2.2.0",
+    "epsagon": "1.109.0"
   }
 }
